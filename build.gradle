@@ -1,0 +1,60 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.2'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'AI Basics - Educational Spring AI Application for GenAI Fundamentals'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+// =============================================================================
+// SPRING AI VERSION MANAGEMENT
+// Spring AI is the official Spring project for integrating AI/ML capabilities.
+// We use a BOM (Bill of Materials) to ensure consistent versions across all
+// Spring AI modules.
+// =============================================================================
+ext {
+	springAiVersion = '1.0.0-M5'
+}
+
+repositories {
+	mavenCentral()
+	// Spring Milestones repository - required for Spring AI pre-release versions
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencyManagement {
+	imports {
+		// Import Spring AI BOM for version management
+		mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+	}
+}
+
+dependencies {
+	// ==========================================================================
+	// SPRING BOOT CORE
+	// ==========================================================================
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// ==========================================================================
+	// SPRING AI - OPENAI INTEGRATION
+	// ==========================================================================
+	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
+
+	// ==========================================================================
+	// TESTING
+	// ==========================================================================
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
